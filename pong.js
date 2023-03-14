@@ -14,7 +14,9 @@ let ballSpeedY = 3;
 
 let leftPaddleSpeed = 0;
 let rightPaddleSpeed = 0;
+// Add this line after the existing variables
 const paddleSpeed = 4;
+const botPaddleSpeed = 4;
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowUp") {
@@ -52,20 +54,27 @@ function draw() {
 }
 
 function movePaddles() {
-  if (isPaused) return; // Add this line
-  leftPaddleY += leftPaddleSpeed;
-  rightPaddleY += rightPaddleSpeed;
+  if (isPaused) return;
 
-  if (leftPaddleY < 0) {
-    leftPaddleY = 0;
-  } else if (leftPaddleY > canvas.height - paddleHeight) {
-    leftPaddleY = canvas.height - paddleHeight;
+  // Bot paddle movement (left paddle)
+  if (leftPaddleY + paddleHeight / 2 < ballY - 35) {
+    leftPaddleY += botPaddleSpeed;
+  } else if (leftPaddleY + paddleHeight / 2 > ballY + 35) {
+    leftPaddleY -= botPaddleSpeed;
   }
 
-  if (rightPaddleY < 0) {
-    rightPaddleY = 0;
-  } else if (rightPaddleY > canvas.height - paddleHeight) {
-    rightPaddleY = canvas.height - paddleHeight;
+  // Keep the bot's paddle within the canvas
+  leftPaddleY = Math.max(
+    Math.min(leftPaddleY, canvas.height - paddleHeight),
+    0
+  );
+
+  // Player paddle movement (right paddle)
+  if (rightPaddleSpeed < 0 && rightPaddleY > 0) {
+    rightPaddleY += rightPaddleSpeed;
+  }
+  if (rightPaddleSpeed > 0 && rightPaddleY < canvas.height - paddleHeight) {
+    rightPaddleY += rightPaddleSpeed;
   }
 }
 
