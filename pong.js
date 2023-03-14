@@ -57,10 +57,16 @@ function movePaddles() {
   if (isPaused) return;
 
   // Bot paddle movement (left paddle)
-  if (leftPaddleY + paddleHeight / 2 < ballY - 35) {
-    leftPaddleY += botPaddleSpeed;
-  } else if (leftPaddleY + paddleHeight / 2 > ballY + 35) {
-    leftPaddleY -= botPaddleSpeed;
+  if (Math.random() < 0.95) {
+    // Add a 5% chance to skip bot movement
+    const randomSpeedVariation = (Math.random() - 0.5) * 2; // Random speed variation between -1 and 1
+    const adjustedBotPaddleSpeed = botPaddleSpeed + randomSpeedVariation;
+
+    if (leftPaddleY + paddleHeight / 2 < ballY - 35) {
+      leftPaddleY += adjustedBotPaddleSpeed;
+    } else if (leftPaddleY + paddleHeight / 2 > ballY + 35) {
+      leftPaddleY -= adjustedBotPaddleSpeed;
+    }
   }
 
   // Keep the bot's paddle within the canvas
@@ -103,6 +109,10 @@ function moveBall() {
       ballY > rightPaddleY &&
       ballY < rightPaddleY + paddleHeight)
   ) {
+    const paddle = ballX <= paddleWidth ? leftPaddleY : rightPaddleY;
+    const relativeBallY =
+      (ballY - (paddle + paddleHeight / 2)) / (paddleHeight / 2);
+    ballSpeedY = relativeBallY * 5;
     ballSpeedX = -ballSpeedX;
   }
 
