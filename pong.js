@@ -9,7 +9,7 @@ let leftPaddleY = (canvas.height - paddleHeight) / 2;
 let rightPaddleY = (canvas.height - paddleHeight) / 2;
 let ballX = canvas.width / 2;
 let ballY = canvas.height / 2;
-let ballSpeedX = 5;
+let ballSpeedX = -5; // Make the initial ball speed negative
 let ballSpeedY = 3;
 
 let leftPaddleSpeed = 0;
@@ -17,6 +17,13 @@ let rightPaddleSpeed = 0;
 // Add this line after the existing variables
 const paddleSpeed = 4;
 const botPaddleSpeed = 4;
+
+let botDifficulty = "medium"; // Default bot difficulty
+
+function setDifficulty(difficulty) {
+  botDifficulty = difficulty;
+  document.getElementById("difficultySelect").blur();
+}
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowUp") {
@@ -57,10 +64,11 @@ function movePaddles() {
   if (isPaused) return;
 
   // Bot paddle movement (left paddle)
-  if (Math.random() < 0.95) {
-    // Add a 5% chance to skip bot movement
-    const randomSpeedVariation = (Math.random() - 0.5) * 2; // Random speed variation between -1 and 1
-    const adjustedBotPaddleSpeed = botPaddleSpeed + randomSpeedVariation;
+  if (Math.random() < (botDifficulty === "easy" ? 0.7 : 0.95)) {
+    const speedAdjustment = botDifficulty === "hard" ? 1.5 : 1;
+    const randomSpeedVariation = (Math.random() - 0.5) * 2;
+    const adjustedBotPaddleSpeed =
+      botPaddleSpeed * speedAdjustment + randomSpeedVariation;
 
     if (leftPaddleY + paddleHeight / 2 < ballY - 35) {
       leftPaddleY += adjustedBotPaddleSpeed;

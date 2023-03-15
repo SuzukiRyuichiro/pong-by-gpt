@@ -65,6 +65,17 @@
       <path d="M8 5v14l11-7z"></path>
     </svg>
   </button>
+  <div id="difficulty">
+    <label for="difficultySelect" style="color: white; font-size: 18px;">Difficulty:</label>
+    <select id="difficultySelect" onchange="setDifficulty(this.value)"
+      style="background-color: black; color: white; font-size: 18px;">
+      <option value="easy">Easy</option>
+      <option value="medium" selected>Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+  </div>
+
+
   <canvas id="gameCanvas" width="640" height="480"></canvas>
   <p id="winner"></p>
   <script src="pong.js"></script>
